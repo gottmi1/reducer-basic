@@ -3,8 +3,10 @@ import "./App.css";
 // import { addTodo } from "./redux/actions";
 // import ReduxContext from "./contexts/ReduxContext";
 // import store from "./redux/store";
-import TodoList from "./components/TodoList";
-import TodoForm from "./components/TodoForm";
+// import TodoList from "./components/TodoList";
+// import TodoForm from "./components/TodoForm";
+import TodoListContainer from "./containers/TodoListContainer";
+import TodoFormContiner from "./containers/TodoFormContainer";
 // import useReduxState from "./Hooks/useReduxState";
 // import useReduxDispatch from "./Hooks/useReduxDIspatch";
 
@@ -15,8 +17,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <TodoList />
-        <TodoForm />
+        <TodoListContainer />
+        <TodoFormContiner />
         {/* {JSON.stringify(state)} */}
       </header>
     </div>
