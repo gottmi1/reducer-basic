@@ -1,0 +1,91 @@
+useContext를 사용하지 않으면 컴포넌트간 통신이 필요할 때 최상위 폴더까지 올라갔다가 다시 내려주는 등 효율이 구리다 그래서 보통 context api를 사용하는데, 이 때 전역 데이터를 잘 활용하는 부분이 중요하게 작용 함.
+이를 어떻게 효율적으로 관리할지 고민하다 나온 라이브러리가 redux이다.
+
+redux는 DOM트리 밖에서 상태를 관리하는 store를 통해 컴포넌트간 통신을 하게 해주는 라이브러리임. store를 어떻게 설계하느냐가 중요하다.
+
+- store는 무조건 '하나'
+store 준비
+import redux
+액션 정의
+액션을 사용하는 리듀서를 만듬
+리듀서를 합친다
+최종 합쳐진 리듀서를 인자로 단일 스토어를 만든다.
+
+- store 사용
+improt react-redux
+connect함수 또는 redux에서 제공하는 api를 사용
+
+- action이라는 객체
+필수 props는 type.
+보통 payload와 함께 사용한다.
+{type : 'TEST} payload없는 액션
+{type : 'TEST' , params : 'hello'} payload가 있는 액션
+
+
+- 리덕스의 액션 생성자(action creater)
+
+function 액션생성자(...args) { return 액션;}
+함수를 통해 액션을 생성하고, 액션 객체를 리턴한다.
+액션생성자("shit") === {type:'TEST', params : 'shit'}을 리턴
+
+- 액션이 하는일
+★액션 -> 스토어 -> 스토어에 있는 상태를 이용하고 있는 컴포넌트 변경★
+1. 액션생성자로 액션을 만들어냄
+2. 만들어 낸 액션 객체를 리덕스 스토어로 보냄
+3. 리덕스 스토어가 액션 객체를 받으면 스토어의 상태값이 변경됨.
+4. 변경된 상태 값에 의해 상태를 이용하고 있는 컴포넌트가 변경됨.
+5. 액션은 스토어에 보내는 일종의 인풋이라고 생각할 수 있다.
+이 과정을 dispatch라고 함.
+
+- 액션 준비
+
+1. 액션의 타입을 정의하여 변수로 저장함
+필수는 아니지만 실수를 많이 방지해준다.
+★액션의 타입은 보통 대문자_대문자 형식이다.★
+
+2. 액션함수 만들기
+하나의 액션 객체를 만들기 위해 하나의 함수를 만든다.
+이 때 타입을 1번의 변수로 가져와서 사용.
+
+- 리덕스의 리듀서
+keyword : 불변성,immutable
+
+액션을 주면 그 액션이 적용된 결과를 만들어 준다.
+그냥 함수(Pure function)임.(항상 같은 input을 받으면 같은 결과를 내는)
+immutable(불변성)을 지켜야 한다(원래 있던 state객체를 수정하는 게 아니라 새로운 객체를 만들어서 대체해야 함)
+이유 : 리듀서를 통해 스테이트가 달라졌음을 리덕스가 인지하는 방식이 그렇기 때문.
+
+형태
+const 리듀서 = (prevState,action) => {
+  return newState;
+};
+액션을 받아서 새로운 상태를 리턴하는 구조.
+인자로 들어오는 prevState와 리턴되는 newState는 다른 참조를 가지도록 해야한다.(immutable을 지켜야 한다는 뜻)
+push와 같은 값은 변경되지만 레퍼런스는 변경되지 않는 메서드를 사용하면 리덕스가 바뀐걸 이지하지 못한다.
+
+
+- 스토어 만들기
+최신 버전에는 createStore를 사용하지 않는다. redux@4.1.2버전을 설치해야 한다.
+
+import { createStore } from "redux";
+
+const store = createStore(리듀서)
+
+export defaul store;
+
+index.js에서 store를 콘솔로 찍어보면
+dispatch: ƒ dispatch(action)
+getState: ƒ getState()
+replaceReducer: ƒ replaceReducer(nextReducer)
+subscribe: ƒ subscribe(listener)
+이 나온다
+
+getState() 현재 store의 상태
+store.dispatch(액션) store의 상태를 변경
+const unsubcribe = store.subscribe(() => {})
+ 리턴이 unsubcribe이다. unsubcribe()를 실행시키면 구독 해지
+
+- combineReducers
+
+특정 값에만 관여하는 reducer들을 값마다 각각 할당할 수 있다(세분화 가능)
+한 리듀서에서 모든 코드를 떄려 박지 않고 각각 리듀서를 작성하여 reducers.js에서 combineReducers({reducer1,reducer2})로 묶어 보기 편하게 만듬
