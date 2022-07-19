@@ -1,22 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+// import { useContext, useEffect, useState } from "react";
+// import { addTodo } from "./redux/actions";
+// import ReduxContext from "./contexts/ReduxContext";
+// import store from "./redux/store";
+import TodoList from "./components/TodoList";
+import TodoForm from "./components/TodoForm";
+// import useReduxState from "./Hooks/useReduxState";
+// import useReduxDispatch from "./Hooks/useReduxDIspatch";
 
 function App() {
+  // const state = useReduxState(); TodoList로 컴포넌트화 시켰으니 제외시킴
+  // const dispatch = useReduxDispatch();
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <TodoList />
+        <TodoForm />
+        {/* {JSON.stringify(state)} */}
       </header>
     </div>
   );

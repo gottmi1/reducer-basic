@@ -1,6 +1,6 @@
 import { ADD_TODO, COMPLETE_TODO } from "../actions";
 
-const initialState = [];
+const initialState = [{ text: "todo1" }];
 
 // todos에만 관여하는 reducer
 const todosReducer = (prevState = initialState, action) => {

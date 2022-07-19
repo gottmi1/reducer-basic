@@ -4,11 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
-import { addTodo, completeTodo, showAll, showComplete } from "./redux/actions";
+import ReduxContext from "./contexts/ReduxContext";
+// import { addTodo, completeTodo, showAll, showComplete } from "./redux/actions";
 
-store.subscribe(() => {
-  console.log(store.getState());
-});
+// store.subscribe(() => {
+//   console.log(store.getState());
+// });
 // store에 변경이 있는지 구독. dispatch가 일어날 때마다 실행됨. 리턴이 구독해지이기 때문에 실행하면 구독이 해지된다.
 
 // store.dispatch(addTodo("coding"));
@@ -22,15 +23,17 @@ store.subscribe(() => {
 
 // console.log(store.getState());
 
-store.dispatch(addTodo("할 일"));
-store.dispatch(completeTodo(0));
-store.dispatch(showComplete());
-store.dispatch(showAll());
+// store.dispatch(addTodo("할 일"));
+// store.dispatch(completeTodo(0));
+// store.dispatch(showComplete());
+// store.dispatch(showAll());
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <ReduxContext.Provider value={store}>
+      <App />
+    </ReduxContext.Provider>
   </React.StrictMode>
 );
 

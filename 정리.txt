@@ -89,3 +89,44 @@ const unsubcribe = store.subscribe(() => {})
 
 특정 값에만 관여하는 reducer들을 값마다 각각 할당할 수 있다(세분화 가능)
 한 리듀서에서 모든 코드를 떄려 박지 않고 각각 리듀서를 작성하여 reducers.js에서 combineReducers({reducer1,reducer2})로 묶어 보기 편하게 만듬
+
+- useContext
+
+흐름 
+컨텍스트에서 store를 가져온 후
+useState로 store의 getState를 현재 state로 담아서,
+useEffect로 업데이트 될 때마다 store.getState를 setState해줄 수 있다. 
+
+
+1. context 파일을 만들고 export default 해줌
+import { createContext } from "react";
+
+const ReduxContext = createContext();
+
+export default ReduxContext;
+
+2. index.js에서 ReduxContext를 불러오고, <ReduxContext.Provider>로 <App />을 감싼다
+
+3. 이 때 Provider에 value={store} 를 줘서 Provider와 store를 동기화(?) 시킴
+
+4. App.js에서 const store = useContext(ReduxContext);로 store를 정의해주고 상태관리를 한다.
+
+5. 더 짧게 쓰려면 커스텀 훅을 만든다
+
+function useReduxState() {
+  const store = useContext(ReduxContext);
+  // context로부터 store를 가져옴
+  const [state, setState] = useState(store.getState());
+  useEffect(() => {
+    // Didmount에서 실행
+    const unsubscribe = store.subscribe(() => {
+      setState(store.getState());
+    });
+    // willUnmount에서 실행
+    return () => {
+      unsubscribe();
+    };
+  }, [store]);
+
+
+store를 Context에서 받아온 후(Provider의 value가 store이기 때문에 받아올 수 있음) 다른 Hooks와 함께 사용한다.
