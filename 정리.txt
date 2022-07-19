@@ -137,3 +137,35 @@ store를 Context에서 받아온 후(Provider의 value가 store이기 때문에 
 Provider컴포넌트를 제공해준다
 connect함수를 통하여 컨테이너를 만들어준다.
 컨테이너란 스토어의 state와 dispatch를, 연결한 컴포넌트에 props로 넣어주는 역할을 한다.
+
+const mapStateToProps = (state) => {
+  return {
+    todos: state.todos,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+const TodoListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList);
+
+초기 형태 connect(config)(TodoList), connect()로 만든 함수를 두번째 ()로 바로 실행
+
+
+connect를 사용하여 컨테이너 컴포넌트와 프레젠테이션 컴포넌트를 분리해줄 수 있음.
+
+
+
+- Hooks 사용하기
+
+connect를 사용하지 않고 useSelector를 사용하면 더 편하고 명시적이게 작업할 수 있음.
+기본 형태 : useSelector((state) => state.가지고 오고 싶은 것)
+  const todos = useSelector((state) => state.todos);
+이렇게 받고 <TodoList todos={todos} /> 이렇게 가져오면 된다.
+
+Hooks가 개편함
+
+reudx를 사용할 땐, 컨테이너와 컴포넌트를 명확히 구분하고 그 역할에 맞는 로직을 작성하는 것이 중요할 것.
