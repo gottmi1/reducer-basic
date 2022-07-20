@@ -169,3 +169,25 @@ connect를 사용하지 않고 useSelector를 사용하면 더 편하고 명시�
 Hooks가 개편함
 
 reudx를 사용할 땐, 컨테이너와 컴포넌트를 명확히 구분하고 그 역할에 맞는 로직을 작성하는 것이 중요할 것.
+
+
+- Redux Addvanced
+
+비동기 작업을 어디서 하는가?? <<< 중요
+1. 액션 분리... start,success,failure 등..
+2. 각각의 액션을 dispatch해줘야 한다
+리듀서는 동기적이고 pure이기 때문에, 그 안에 api호출 등을 넣을 수 없음.
+이런식으로 작업을 하면 컴포넌트가 복잡해지고 뷰와 상관없는 로직이 계속 끼어들게 된다.
+
+처리 전
+
+UserList 컴포넌트 => api를 호출하고 그를 보여주는 컴포넌트
+UserListContainer => UserList컴포넌트에 action 함수를 dispatch해주는 역할
+★액션은 디스패치 되어야하기 때문에 dispatch(action(data)) 형식은 당연한 것이다. 여기서 dispatch는 useDispatch()임.
+reudcers/users => dispatch type에 따라 어떤 결과를 리턴해줄지 정해줌. 전형적인 reducer함수가 하는 일이 이것이라고 보면 된다. switch문이 더 편할듯.
+
+만든 후 처리한 것
+UserList에 있던 api호출 로직을 컨테이너로 옮겼다.
+이유 : 뷰를 담당해야하는 컴포넌트에 비동기로직을 넣으면 테스트도 어렵고 뷰에 관련되지 않은 로직이 추가되기 때문에 디버깅도 어려움. Container에서 props를 받아서 보여주기만 하는 게 프레젠테이션 컴포넌트의 원래 할 일이다.
+
+UserListContainer의 로직은 하나로 묶어서 UserList 컴포넌트에서 props를 여러개 받지 않아도되게끔 수정.

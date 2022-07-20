@@ -7,6 +7,7 @@ import "./App.css";
 // import TodoForm from "./components/TodoForm";
 import TodoListContainer from "./containers/TodoListContainer";
 import TodoFormContiner from "./containers/TodoFormContainer";
+import UserListContainer from "./containers/UserListContainer";
 // import useReduxState from "./Hooks/useReduxState";
 // import useReduxDispatch from "./Hooks/useReduxDIspatch";
 
@@ -17,6 +18,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <UserListContainer />
         <TodoListContainer />
         <TodoFormContiner />
         {/* {JSON.stringify(state)} */}
