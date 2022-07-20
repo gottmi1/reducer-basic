@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useCallback } from "react";
 export const ADD_TODO = "ADD_TODO";
 export const COMPLETE_TODO = "COMPLETE_TODO";
 
@@ -52,5 +54,35 @@ export function getUsersFailure(error) {
   return {
     type: GET_USERS_FAILURE,
     error,
+  };
+}
+
+export function getUsersThunk() {
+  return async (dispatch) => {
+    try {
+      dispatch(getUsersStart());
+      const res = await axios.get("https://api.github.com/users");
+      dispatch(getUsersSuccess(res.data));
+    } catch (error) {
+      dispatch(getUsersFailure(error));
+    }
+  };
+}
+
+const GET_USERS = "GET_USERS";
+
+export const GET_USERS_PENDING = "GET_USERS";
+export const GET_USERS_FULFILLED = "GET_USERS_FULFILLED";
+export const GET_USERS_REJECTED = "GET_USERS_REJECTED";
+// 프로미스 미들웨어가 자동으로 이런 액션타입으로 디스패치해준다.
+
+export function getUsersPromise() {
+  return {
+    type: GET_USERS,
+    // reudx-promise에서는 payload에서 promise 함수를 반환한다.
+    payload: async () => {
+      const res = await axios.get("https://api.github.com/users");
+      return res.data;
+    },
   };
 }

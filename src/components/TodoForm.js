@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { connect } from "react-redux";
-import { addTodo } from "../redux/actions";
+// import { connect } from "react-redux";
+// import { addTodo } from "../redux/actions";
 
 export default function TodoForm({ add }) {
   const inputRef = useRef();
